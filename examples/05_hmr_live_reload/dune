@@ -1,4 +1,3 @@
 ﻿(executable
- (name cordis)
- (public_name cordis)
+ (name main)
  (libraries cordis_core cordis_system unix))

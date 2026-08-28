@@ -1,6 +1,6 @@
 ﻿(executables
  (names test_runner)
- (libraries cordis_core cordis_system cordis_quant unix)
+ (libraries cordis_core cordis_system unix)
  (synopsis "Test runner for Cordis-OxCaml"))
 
 (rule

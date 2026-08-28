@@ -1,3 +1,0 @@
-﻿(executable
- (name main)
- (libraries cordis_core cordis_system cordis_quant unix))

@@ -15,6 +15,7 @@ let () =
   Test_schema.run_tests ();
   Test_timer.run_tests ();
   Test_loader.run_tests ();
+  Test_hmr.run_tests ();
   Test_algebraic_effects.run_tests ();
 
   let elapsed = (Unix.gettimeofday () -. start_t) *. 1000.0 in
