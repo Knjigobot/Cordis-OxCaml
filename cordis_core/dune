@@ -1,0 +1,5 @@
+﻿(library
+ (name cordis_core)
+ (public_name cordis-oxcaml.core)
+ (libraries unix)
+ (synopsis "Microkernel for Spatiotemporal Composability in OxCaml"))

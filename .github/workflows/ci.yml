@@ -1,0 +1,37 @@
+﻿name: Cordis-OxCaml CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        ocaml-compiler:
+          - "5.1.x"
+          - "5.2.x"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up OCaml
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+          dune-cache: true
+
+      - name: Install dependencies
+        run: opam install . --deps-only --with-test -y
+
+      - name: Build libraries and executables
+        run: opam exec -- dune build @all
+
+      - name: Run test suite
+        run: opam exec -- dune runtest --no-buffer

@@ -1,0 +1,5 @@
+﻿(library
+ (name cordis_quant)
+ (public_name cordis-oxcaml.quant)
+ (libraries cordis_core cordis_system unix)
+ (synopsis "High-Performance Quantitative Finance and Reactive Pipeline for Cordis-OxCaml"))

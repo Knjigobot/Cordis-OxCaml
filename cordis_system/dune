@@ -1,0 +1,5 @@
+﻿(library
+ (name cordis_system)
+ (public_name cordis-oxcaml.system)
+ (libraries cordis_core unix)
+ (synopsis "Surrounding Programmer Subsystems for Cordis-OxCaml"))
