@@ -6,6 +6,27 @@ type timeframe = M1 | M5 | M15 | H1 | D1
 
 val seconds_of_timeframe : timeframe -> float
 
+type commodity_contract =
+  | ALI_FUT      (** LME Primary Aluminium 3M (25 MT) *)
+  | COPPER_FUT   (** LME Grade A Copper (25 MT) *)
+  | ZINC_FUT     (** LME SHG Zinc (25 MT) *)
+  | NICKEL_FUT   (** LME Primary Nickel (6 MT) *)
+  | CRUDE_FUT    (** NYMEX WTI Light Sweet Crude (1,000 BBL) *)
+  | Custom_Contract of { symbol : string; lot_size : float; tick_size : float; tick_val : float }
+
+type contract_spec = {
+  contract_symbol : string;
+  name : string;
+  exchange : string;
+  lot_size : float;
+  tick_size : float;
+  tick_value : float;
+}
+
+val get_contract_spec : commodity_contract -> contract_spec
+val notional_value : commodity_contract -> float -> float -> float
+val calculate_pnl : commodity_contract -> float -> float -> float -> float
+
 type tick = {
   symbol : symbol;
   timestamp : float;
