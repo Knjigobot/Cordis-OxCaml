@@ -58,6 +58,17 @@ let broadcast_sse (s : t) (data : string) : unit =
   ) s.sse_clients;
   s.sse_clients <- !valid_clients
 
+let read_file_content path =
+  try
+    let ic = open_in_bin path in
+    let len = in_channel_length ic in
+    let buf = Bytes.create len in
+    really_input ic buf 0 len;
+    close_in ic;
+    Bytes.to_string buf
+  with _ ->
+    "<!DOCTYPE html><html><body><h1>Tradis Cordis-OxCaml Active</h1></body></html>"
+
 let handle_client (s : t) (client_sock : Unix.file_descr) : unit =
   let in_ch = Unix.in_channel_of_descr client_sock in
   let line = try input_line in_ch with _ -> "" in
@@ -105,10 +116,14 @@ let handle_client (s : t) (client_sock : Unix.file_descr) : unit =
       Unix.close client_sock
     end
 
-    (* 4. Static / Default HTML Response *)
+    (* 4. Main HTML UI Delivery *)
     else begin
-      let body = "<!DOCTYPE html><html><head><title>Cordis-OxCaml</title></head><body><h1>Cordis-OxCaml Runtime Active</h1><p>Spatiotemporal Composability Engine Running with Dual-Channel Zero-Refresh Live Sync.</p></body></html>" in
-      let resp = Printf.sprintf "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: %d\r\n\r\n%s"
+      let html_path = match s.static_dir with
+        | Some dir -> Filename.concat dir "index.html"
+        | None -> if Sys.file_exists "index.html" then "index.html" else "Tradis/index.html"
+      in
+      let body = read_file_content html_path in
+      let resp = Printf.sprintf "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\nAccess-Control-Allow-Origin: *\r\nContent-Length: %d\r\n\r\n%s"
           (String.length body) body in
       ignore (Unix.write_substring client_sock resp 0 (String.length resp));
       Unix.close client_sock
